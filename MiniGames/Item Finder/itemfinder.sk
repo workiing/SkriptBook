@@ -1,22 +1,22 @@
 options:
-    permission: bingo.commands
+    permission: itemfinder.commands
 
 on load:
     make console execute command "whitelist on"
     make console execute command "worldborder set 10"
     make console execute command "worldborder center 26.44 -40.54"
-    make console execute command "scoreboard objectives remove GoldCup"
-    make console execute command "scoreboard objectives add GoldCup dummy"
-    make console execute command "scoreboard objectives setdisplay sidebar GoldCup"
-    Clear {bingo.score}
-    Clear {bingo.running}
-    Clear {bingoitem}
+    make console execute command "scoreboard objectives remove ItemFinder"
+    make console execute command "scoreboard objectives add ItemFinder dummy"
+    make console execute command "scoreboard objectives setdisplay sidebar ItemFinder"
+    Clear {itemfinder.score}
+    Clear {itemfinder.running}
+    Clear {itemfinderitem}
 
 on join:
     make console execute command "gamemode adventure %player%"
     make console execute command "tp %player% 26 200 -43"
     make console execute command "effect give %player% minecraft:slow_falling 20"
-    send title "&c&lWillkommen zum" with subtitle "&6&lGold&e&lCup &7-&2&l Item Finder" to player for 15 seconds
+    send title "&c&lWillkommen zu" with subtitle "&6&lServer&e&lName &7-&2&l Item Finder" to player for 15 seconds
 
 
 command /itemfinder [<text>]:
@@ -25,8 +25,8 @@ command /itemfinder [<text>]:
         if arg-1 is not set:
             send "&cBitte gib eine Zahl als Argument an. Benutze /itemfinder 1-7"
         else if arg-1 is "1":
-            set {bingoitem} to repeater
-            set {bingo.running} to true
+            set {itemfinderitem} to repeater
+            set {itemfinder.running} to true
             broadcast "&aItem Finder gestartet! Besorge einen &cVerstärker."
             make console execute command "worldborder set 1000 150"
             make console execute command "gamemode survival @a"
@@ -34,8 +34,8 @@ command /itemfinder [<text>]:
             make console execute command "effect give %player% minecraft:saturation 10 250"
             make console execute command "effect give %player% minecraft:regeneration 10 250"
         else if arg-1 is "2":
-            set {bingoitem} to Minecart with Chest
-            set {bingo.running} to true
+            set {itemfinderitem} to Minecart with Chest
+            set {itemfinder.running} to true
             broadcast "&aItem Finder gestartet! Besorge eine &cGüterlore"
             make console execute command "worldborder set 1000 150"
             make console execute command "gamemode survival @a"
@@ -43,8 +43,8 @@ command /itemfinder [<text>]:
             make console execute command "effect give %player% minecraft:saturation 10 250"
             make console execute command "effect give %player% minecraft:regeneration 10 250"
         else if arg-1 is "3":
-            set {bingoitem} to Book and Quill
-            set {bingo.running} to true
+            set {itemfinderitem} to Book and Quill
+            set {itemfinder.running} to true
             broadcast "&aItem Finder gestartet! Besorge ein &cBuch und Feder"
             make console execute command "worldborder set 1000 150"
             make console execute command "gamemode survival @a"
@@ -52,8 +52,8 @@ command /itemfinder [<text>]:
             make console execute command "effect give %player% minecraft:saturation 10 250"
             make console execute command "effect give %player% minecraft:regeneration 10 250"
         else if arg-1 is "4":
-            set {bingoitem} to Gold block
-            set {bingo.running} to true
+            set {itemfinderitem} to Gold block
+            set {itemfinder.running} to true
             broadcast "&aItem Finder gestartet! Besorge einen &cGoldblock"
             make console execute command "worldborder set 1000 150"
             make console execute command "gamemode survival @a"
@@ -61,8 +61,8 @@ command /itemfinder [<text>]:
             make console execute command "effect give %player% minecraft:saturation 10 250"
             make console execute command "effect give %player% minecraft:regeneration 10 250"
         else if arg-1 is "5":
-            set {bingoitem} to lava bucket
-            set {bingo.running} to true
+            set {itemfinderitem} to lava bucket
+            set {itemfinder.running} to true
             broadcast "&aItem Finder gestartet! Besorge einen &cLavaeimer"
             make console execute command "worldborder set 1000 150"
             make console execute command "gamemode survival @a"
@@ -70,8 +70,8 @@ command /itemfinder [<text>]:
             make console execute command "effect give %player% minecraft:saturation 10 250"
             make console execute command "effect give %player% minecraft:regeneration 10 250"
         else if arg-1 is "6":
-            set {bingoitem} to flint and steel
-            set {bingo.running} to true
+            set {itemfinderitem} to flint and steel
+            set {itemfinder.running} to true
             broadcast "&aItem Finder gestartet! Besorge ein &cFeuerzeug"
             make console execute command "worldborder set 1000 150"
             make console execute command "gamemode survival @a"
@@ -79,8 +79,8 @@ command /itemfinder [<text>]:
             make console execute command "effect give %player% minecraft:saturation 10 250"
             make console execute command "effect give %player% minecraft:regeneration 10 250"
         else if arg-1 is "7":
-            set {bingoitem} to dispenser
-            set {bingo.running} to true
+            set {itemfinderitem} to dispenser
+            set {itemfinder.running} to true
             broadcast "&aItem Finder gestartet! Besorge einen &cWerfer"
             make console execute command "worldborder set 1000 150"
             make console execute command "gamemode survival @a"
@@ -91,19 +91,19 @@ command /itemfinder [<text>]:
             send "&cUngültiger Befehl. Benutze /itemfinder 1-7"
 
 every 0.5 seconds:
-    if {bingo.running} is true:
+    if {itemfinder.running} is true:
         loop all players:
             set {_inventory} to inventory of loop-player
-            if {_inventory} contains {bingoitem}:
+            if {_inventory} contains {itemfinderitem}:
                 make console execute command "gamemode spectator %loop-player%"
-                remove all {bingoitem} from {_inventory}
-                add 1 to {bingo.score}
-                execute console command "scoreboard players set %loop-player% GoldCup %{bingo.score}%"
+                remove all {itemfinderitem} from {_inventory}
+                add 1 to {itemfinder.score}
+                execute console command "scoreboard players set %loop-player% ItemFinder %{itemfinder.score}%"
                 send title "&a&l%loop-player%" with subtitle "&7hat das Item gefunden!" to all players for 3 seconds
-                if {bingo.score} is 7:
+                if {itemfinder.score} is 7:
                     make console execute command "gamemode spectator @a"
                     send title "&c&lENDE" with subtitle "&7Die Gewinner stehen fest!" to all players for 10 seconds
-                    set {bingo.running} to false
+                    set {itemfinder.running} to false
                 stop loop
 
 command /itemfinderreset:
