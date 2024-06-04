@@ -1,2 +1,2 @@
 # SkriptBook
- Archiv of my Minecraft Skript Projects
+ Archive of my Minecraft Skript Projects
